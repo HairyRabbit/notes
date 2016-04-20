@@ -13,8 +13,7 @@
 * [CoffeeScript](http://coffeescript.org/)
 * [Stylus](http://stylus-lang.com/)
 * [Postcss](http://postcss.org/)
-* Handlebars
-* Webpack
+* [Webpack](https://webpack.github.io/)
 * Elm
 
 后端部分：
@@ -256,4 +255,12 @@ export default class NavBar extends Component {
 
 ## 来打包吧
 
+说到 Js，一个一直以来很都比的事情就是，他没有模块的概念。当然，写一些小程序也用不到什么模块，但项目规模一大之后，这就是个问题了。从最开始的 IIFE，到后来的 requireJS 的 AMD 模块，nodejs 的 CMD 模块，再到后来的 UMD 模块，ES6 模块系统，模块化开发已经不是很么问题。那么，我们还需要将模块打包在一起。
 
+webpack 来做这个，再合适不过了，他的作用就是打包，打包，再打包。打包 Js，打包 css，打包图片，还能打包字体……，还能打包 txt，markdown……真的是越来越离谱了。总的来说，webpack 是靠各种 loader 和插件来打包成一个`bundle.js`。当然也能打包成多个，这由你来设置。webpack 相信大家都用过了。
+
+当然，webpack 除了打包之外还提供一些其他很厉害的功能。一般来说也要介绍 webpack-dev-server。这是一个服务器，可以配合 webpack 开发功能。那么他们有哪些变态功能呢？首先不得不说的就是热交换 HMR 了。我们的代码更改之后，就会替换`bundle.js`中对应的部分，这可以大大提升我们开发效率，当然和 file watcher 并不是一路货色，自己体会吧。接下来要说的就是代码分割和异步加载功能。当文件东西太多时，我们可能会用到代码分隔，直观理解就是会分解成多个文件。那么异步加载呢？这个就厉害了。当在做 SPA 时，就会用到这个功能，我们并不需要将整个`bundle.js`全部功能都加载，在路由层，当路由到时我们通过异步加载的方式按需加载代码，这样就可以大大减小`bundle.js`的体积，使页面加载的更快。
+
+但是那需要用到`require()`，作为 ES6 脑残粉怎么能容忍 require 出现呢，所以在新版的 webpack，也就是 webpack2 中出现了 System 加载器，这个东东就可以让 require 见鬼去了。当然，除了新的加载器，webpack2 的配置也会变的更简单和容易扩展，值得一提的是最终的代码压缩，体积要更小一些。
+
+## 开始之前一定要好好设计
