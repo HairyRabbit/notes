@@ -6,13 +6,13 @@
 
 ## 全是些奇怪的东西
 
-功能很简单的三个页面，也算是 1.0 版。两天的工作量为嘛做了一个月之久呢。所以，Just for fun。总的来说收获是很大的，也想分享给大家我的研究成果。
+功能很简单的三个页面，也算是 1.0 版。两天的工作量为嘛做了一个月之久呢。所以说，Just for fun。总的来说收获是很大的，也想分享给大家我的研究成果。
 
 前端部分：
 
 * [CoffeeScript](http://coffeescript.org/)
 * [Stylus](http://stylus-lang.com/)
-* Postcss
+* [Postcss](http://postcss.org/)
 * Handlebars
 * Webpack
 * Elm
@@ -52,8 +52,7 @@ path1      = if isSlashEnd then trimPath else path
 es6 有些语法和 coffee 也很相似，应该是用的最多的箭头函数了吧：
 
 ```js
-const add = (a, b) => a + b
-[1, 2, 3, 4, 5].reduce(add) //=> 15
+[1, 2, 3, 4, 5].reduce((a, b) => a + b) //=> 15
 ```
 
 再来看看这个：
@@ -106,7 +105,7 @@ $.get(url).then((function(_this) {
 
 格式并没有什么问题，版本则是个大坑。ruby-sass 版本要超前一些，有一些很有用的功能，比如说他支持 BEM 写法，缺点是编译速度慢，慢，慢的厉害。libsass 是 c++，编译的很快，但是功能受限，一般来说是安装 node-sass 来用 libsass 编译。对，就是这个恶心的地方！你想要使用 BEM 就必须得先装 ruby，再用 gem 去装 sass。而然，gem 整个被墙掉了，需要换源，好像最近x宝的源还没法用了，只能换 ruby-china 或是翻墙，着实麻烦的很。我为了一个 sass 还要装个 ruby？好的……对了，之前的版本貌似不支持中文，还要在 ruby 源码里改一个地方……
 
-如果你和我一样喜欢清晰的语法，我向你推荐 stylus。stylus 是 TJ 的作品，TJ 是谁？就是那个写express 的 hentai 啦。顺便一提，coffee 的作者写了 backbone 和 underscore……好吧，既然是出自大牛的手笔，质量什么的就放心好了。
+如果你和我一样喜欢清晰的语法，我向你推荐 stylus。stylus 是 TJ 的作品，TJ 是谁？就是那个写 express 的 hentai 啦。顺便一提，coffee 的作者写了 backbone 和 underscore……好吧，既然是出自大牛的手笔，质量什么的就放心好啦。
 
 接下来就展示一下语法，先从基本的选择器开始吧：
 
@@ -129,7 +128,7 @@ fz = 14px
       background transparent
 ```
 
-没有花括号，没有分号，甚至也可有没有冒号。当然，肯定少不了 mixins 和 extends：
+没有花括号，没有分号，甚至也可有没有冒号，就像函数调用。当然，肯定少不了 mixins 和 extends：
 
 ```stylus
 transform()
@@ -165,8 +164,96 @@ json('media-queries.json')
 
 看到这里我相信你会慢慢爱上他的。
 
-如果你用过 compass 的话，那么 stylus 还有个很厉害的框架，叫做 [nib](http://tj.github.io/nib/)，名字就可以看的出实力。好吧，就这么多。
+如果你用过 compass 的话，那么 stylus 还有个很厉害的框架，叫做 [nib](http://tj.github.io/nib/)，名字就可以看的出实力。好吧，就先这么多。
 
 ## 写起来放心，用着舒心
+
+对于 css，我们有了很厉害的茅，就是牛到天上的各种预处理器，不过呢，我们还有更强大的盾。天啊！这是 css 的后处理器，叫做 postcss。所以说，这个东东到底是做什么的。后处理器，字面意思上说就是把产品再加工。如果你有下列需求，那么他很适合你：
+
+* 我需要给属性加前缀来兼容手机端和旧浏览器；
+* 样式表写的太麻烦了，想要简单一些；
+* 我想要尝试下一代 css 草案中的语法；
+* 我在用 react
+
+那么说，postcss 有一系列的插件，很多很多，利用他们就可以做完上面的需求。首先是加前缀的问题，这需要用到 autoprefixer，就不需要细说了，大家都懂的；那第二点是什么意思呢？这里用到了另外一个 postcss 插件，叫做 short，他打包了一些常用语法，比如：
+
+```stylus
+.div1
+  size 5rem 3rem
+.div2
+  size 1rem
+```
+
+这会编译为：
+
+```css
+.div1 {
+  width:  5rem;
+  height: 3rem;
+}
+.div2 {
+  width:  1rem;
+  height: 1rem;
+}
+```
+
+还有：
+
+```stylus
+.footer
+  position fixed * 0 0 0
+```
+
+我想，你已经猜到了，这会编译成：
+
+```css
+.footer {
+  position: fixed;
+  right:  0;
+  bottom: 0;
+  left:   0;
+}
+```
+
+那么下一代语法是怎么回事呢？还是举个栗子好了：
+
+```css
+:root {
+  --red: #d33;
+}
+.test {
+  color: var(--red)
+}
+```
+
+还需要解释么？这她喵的就是变量。最后是 react，为嘛 react 需要 postcss 呢？其实不如说 react 需要 css modules。什么鬼？我们都知道 react 的尿性是 Anything to Js，css 也不例外，按照 react 的特点，css 也有了模块的特性，还是来个栗子好解释一些：
+
+```css
+/* style.css */
+
+.navBar {
+  display: flex;
+  align-items: center;
+}
+```
+
+```jsx
+// nav-bar.jsx
+
+import styles from "./style.css"
+import React, { Component } from "react"
+
+export default class NavBar extends Component {
+  render() {
+    return <nav class={styles.navBar}>{this.props.children}</nav>
+  }
+}
+```
+
+而且，模块之间还能互相组合，简直了。
+
+不得不说，套了两层 Buff 的 css 现在真的是非常厉害。
+
+## 来打包吧
 
 
