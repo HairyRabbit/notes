@@ -33,14 +33,14 @@
 
 这是一个简单的 demo，大致意思是如果地址栏地址末尾带着`\`，就去掉他，否则就保持原样。我们先来 es6 版本：
 
-```js
+```javascript
 let path  = location.pathname
 let path1 = path.match(/\/$/) ? path.slice(0, -1) : path
 ```
 
 接下来是 coffee :
 
-```coffee
+```coffeescript
 path       = location.pathname
 isSlashEnd = path.match /\/$/
 trimPath   = path.slice 0, -1
@@ -51,32 +51,32 @@ path1      = if isSlashEnd then trimPath else path
 
 es6 有些语法和 coffee 也很相似，应该是用的最多的箭头函数了吧：
 
-```js
+```javascript
 [1, 2, 3, 4, 5].reduce((a, b) => a + b) //=> 15
 ```
 
 再来看看这个：
 
-```coffee
+```coffeescript
 [1..5].reduce (a, b) -> a + b #=> 15
 ```
 
 差不多，是吧？哦，对了，箭头函数除了写起来更清晰之外，还有另外一个重要作用，就是可以绑定 this：
 
-```js
+```javascript
 $.get(url).then(res => this.setState({ datas: res }))
 ```
 
 这个 coffee 也有：
 
-```coffee
+```coffeescript
 $.get url
  .then (res) => @setState datas: res
 ```
 
 我知道这里你会讲 coffee 的坏话，因为 coffee 编译出来是这样的代码：
 
-```js
+```javascript
 $.get(url).then((function(_this) {
   return function(res) {
     return _this.setState({
@@ -237,7 +237,7 @@ json('media-queries.json')
 }
 ```
 
-```jsx
+```javascript
 // nav-bar.jsx
 
 import styles from "./style.css"
