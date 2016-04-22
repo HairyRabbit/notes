@@ -18,10 +18,10 @@
 
 后端部分：
 
-* RAML
-* Nginx
-* PostgreSQL
-* PostgREST
+* [RAML](http://raml.org/)
+* [PostgREST](http://postgrest.com)
+* [Nginx]()
+* [PostgreSQL]()
 
 接下来当然是挨个介绍。
 
@@ -264,4 +264,77 @@ webpack 来做这个，再合适不过，他的作用就是打包，打包，再
 
 但是那需要用到`require()`，作为 ES6 脑残粉怎么能容忍 require 出现呢，所以在新版的 webpack，也就是 webpack2 中出现了 System 加载器，这个东东就可以让 require 见鬼去了。当然，除了新的加载器，webpack2 的配置也会变的更简单和容易扩展，值得一提的是代码压缩功能，webpack2 压缩代码的体积要更小一些。
 
+最近也试了试最新的`webpack@2.1.0.beta.5`和`webpack-dev-server@2.0.0-beta`，结果嘛，你懂的，各种报错搞崩溃了。查 issues 手动修复了几处 bug 成功跑了起来，感觉也确实是不一样的。
+
 ## 开始之前一定要好好设计
+
+下面要一并说两个东东，他们是 RAML 和 postgREST。这还要从 emberJs 开始说起。
+
+记得很清楚开始接触 RESTful 时是学习 emberJs 的时候。虽然 RESTful 这个词很早就听说过，也在玩 rails 的时候简单玩过，但因为工作的原因迟迟没有用到，也就忘了个干净。后来在 ember-data 中大量使用了起来，不得不关注起 Api 方面的东东，结果后来还出了 jsonapi 。怎么说呢，这些东西可以简单理解为 url 到资源的映射关系，我喜欢表达丰富的家伙，当然也就爱上了他。与 Java 时代不同的是，这不会只返回 200,404,500，或是清一色的 POST 请求。RESTful 有很多的状态码，201，204，还有不止 GET 和 POST 的请求，而且 url 也与平常的静态文件目录结构不同，他含有丰富的信息。既然这样，那一定有一个设计 API 的工具，木有错，就是 RAML。
+
+还是先来看个栗子的好，恩，就来这个 blog 所用的吧：
+
+```yaml
+#%RAML 1.0
+title: Post API
+version: v1
+baseUri: http://www.yufi.me/api/{version}/post
+mediaType application/json
+
+types:
+  Post:
+    type: object
+    properties:
+      title: string
+      datetime: date
+      istop: boolean
+      intro: string
+      filepath: string
+      
+/post/{postId}:
+  get:
+    responses:
+      200:
+        body:
+          application/json:
+            schema: Post
+```
+
+当然，我省略了一些东东，大概部分就是这些，主要由基本信息，类型和路径规则构成。上面的这段也就是从服务器获取文章的路由规则，所匹配的地址是`http://www.yufi.me/api/v1/post/1`。也有很多的前端工具可用，相当的方便。
+
+说到 RESTful 的话有个工具是一定一定要提一下的，这也是我用了好久的东东，那就是 postgREST。这个东东可以算是个小型服务器，数据库链接 postgreSQL，内置了一个 warp 服务器，性能很快，也很方便使用。他有自己的一套路由规则，习惯之后就会上瘾，像普通的取值，排序都很容易做到，比如我像取 id 为 1 的文章只需要请求`/post?id=eq.1`，或者是取用户的某些字段并排序：`/user?age=gte.17&order=score.dest`。由于 postgreSQL 9.4.2 支持 Json，所以他也支持 Json 查询，并且还支持分页，只需要配置一下头信息：
+
+```HTTP
+Range-Unit: items
+Range: 0-10
+```
+
+把他俩放在一起说，恩，其实是一个愿望，是希望 postgREST 快点支持 RAML，这样就不用我去写工具手动支持了，233。至于 nginx 和 postgreSQL 的话并木有什么可以分享的东东，不过也想简单聊聊。
+
+话说我最近玩了下 nginScript，这玩意很有趣，可以在 nginx.conf 中写Js。虽然骂声好像不少的样子，不过挺有趣的，他有点像写 node，来看看这个好了：
+
+```nginx
+http {
+  js_set $hello "
+    var s = ''
+    s += 'hello '
+    s += ' world'
+    ";
+
+  server {
+    listen 8080;
+    
+    location / {
+      return 200 $hello;
+    }
+  }
+}
+```
+
+是不是很有趣。我们知道 nginx 是有 lua 模块的，很厉害，如果 js 也可以像 lua 模块那样就更好了，不过他目前还在测试版。
+
+然后 postgreSQL 呢，是我最喜欢的数据库，特别是再支持了 JSON 之后，mongoDB 就被弃在了一边。你说 MySQL？那是什么 0 0？
+
+## 这就是为什么要放在最后才说的原因
+
+好吧，如果你忍着性子看到这里，我先要对你表示感谢，然后呢，我要告诉你一件很重要的事情。你一定发现了我有一个东西还没有介绍，并不是我忘记了，而是我想把他放在最后。这是因为，如果你不喜欢他，就一丁点都不会接受；如果对他有点点兴趣，就会彻底喜欢上他，这就是最后要介绍的东东，Elm。
