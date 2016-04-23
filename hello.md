@@ -503,4 +503,6 @@ var dom = map(render, Mouse.x)
 import My.ElmQQGroup exposing (537981557)
 ```
 
-那么就这些，下次再见！
+当然，这里并不局限于讨论 Elm，所有关于 Coding 的一切无论前端后端，都欢迎加入。
+
+那么就这些，下周再见！
