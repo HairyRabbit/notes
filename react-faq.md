@@ -1,4 +1,4 @@
-# React FAQ
+# React 从入门到放弃
 
 > Q：React是什么？
 
@@ -23,9 +23,11 @@ A：不需要，不过推荐入手学习ES6。学习和使用ES6可以让代码�
 > Q：如果我想使用ES6的语法来写React，需要做哪些准备工作呢？
 
 A：由于浏览器兼容性问题，目前普遍的做法是将ES6代码转为各浏览器厂商广泛支持的ES5代码。编译工具可以选择babel或Typescript等，推荐使用babel。安装babel我们需要提前安装nodejs与npm包管理器，可以使用npm用下面的命令安装：
-'''shell
+
+```shell
 npm i -D babel-core babel-preset2015 babel-react
-'''
+```
+
 安装完成后我们可以使用webpack工具打包es6代码。
 
 > Q：React必须使用nodejs么？
@@ -46,6 +48,38 @@ A：一般来说一个月时间就可以掌握，三个月就能达到理解层�
 
 > Q：我要如何开始学习React？
 
-A：首先要完成阅读官方的getting start。
+A：首先要完成阅读官方的getting start，了解React的基本语法形式。如果想尝尝鲜，可以创建一个`index.html`，库资源使用免费的CDN即可：
+
+```html
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Hello World</title>
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/react/15.0.2/react.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/react/15.0.2/react-dom.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.23/browser.min.js"></script>
+  </head>
+  <body>
+    <div id="app"></div>
+
+    <script type="text/babel">
+      const Hello = React.createClass({
+        render: function() {
+          return (<h1>Hello world!</h1>)
+        }
+      })
+
+      ReactDOM.render(
+        <Hello />,
+        document.getElementById('app')
+      );
+      </script>
+  </body>
+</html>
+```
 
 
