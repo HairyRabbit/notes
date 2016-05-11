@@ -216,10 +216,10 @@ npm run start
 
 接下来会看到webpack的打包过程，成功之后在我们的浏览器中输入`localhost:8080`就会看到`Hello World`了。React的简单环境搭建完成。
 
-> #13 Q：如何安装nodejs，我应该选择哪个版本？
+> \#13 Q：如何安装nodejs，我应该选择哪个版本？
 
 A：[nodejs](http://nodejs.org)
 
-> #14 Q：package.json文件是做什么的，有什么作用？
+> \#14 Q：package.json文件是做什么的，有什么作用？
 
 A：
