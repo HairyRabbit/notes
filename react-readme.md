@@ -195,6 +195,27 @@ render(
 )
 ```
 
+现在我们还要给`package.json`动一个小手术来用简单的命令启动`webpack-dev-server`：
+
+```javascript
+{
+  //...
+  "scripts": {
+    "start": "node_modules/.bin/webpack-dev-server",
+    "build": "node_modules/.bin/webpack"
+  }
+  //...
+}
+```
+
+完成后在终端中使用刚才添加的配置来启动服务器了：
+
+```shell
+npm run start
+```
+
+接下来会看到webpack的打包过程，成功之后在我们的浏览器中输入`localhost:8080`就会看到`Hello World`了。React的简单环境搭建完成。
+
 > #13 Q：如何安装nodejs，我应该选择哪个版本？
 
 A：[nodejs](http://nodejs.org)
